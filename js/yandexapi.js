@@ -1,10 +1,15 @@
 window.addEventListener('DOMContentLoaded', () => {
     ymaps.ready(init);
+    let map;
+    let higherCollection
+    let averageCollection
+    let additionalCollection
+    let activeBtn;
 
     async function init() {
         let center = [55.649803162, 37.664463043]
         // Параметры карты можно задать в конструкторе.
-        let map = await new ymaps.Map(
+        map = await new ymaps.Map(
             'map',
             {
                 center: center,
@@ -14,9 +19,9 @@ window.addEventListener('DOMContentLoaded', () => {
                 searchControlProvider: 'yandex#search'
             });
 
-        let higherCollection = new ymaps.GeoObjectCollection(null, {});
-        let averageCollection = new ymaps.GeoObjectCollection(null, {});
-        let additionalCollection = new ymaps.GeoObjectCollection(null, {});
+        higherCollection = new ymaps.GeoObjectCollection(null, {});
+        averageCollection = new ymaps.GeoObjectCollection(null, {});
+        additionalCollection = new ymaps.GeoObjectCollection(null, {});
 
         /*----------------------------------------Высшее образование------------------------------------------------*/
         let higherEducation = [
@@ -33,7 +38,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 longitude: 37.586139122312204
             }
         ];
-        const higherEduc = () => {
+        higherEduc = () => {
             for (let i = 0; i < higherEducation.length; i++) {
                 higherEducation.forEach((item) => {
                     higherCollection.add(new ymaps.Placemark([item.latitude, item.longitude], {
@@ -57,6 +62,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 })
 
             }
+            return higherEducation
         }
 
         /*----------------------------------------Среднее образование------------------------------------------------*/
@@ -73,7 +79,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 longitude: 52.274258541957394
             }
         ];
-        const averEducation = function () {
+        averEducation = () => {
             for (let i = 0; i < averageEducation.length; i++) {
                 averageEducation.forEach((item) => {
                     averageCollection.add(new ymaps.Placemark([item.latitude, item.longitude], {
@@ -96,6 +102,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     }))
                 })
             }
+            return averEducation
         }
 
         /*----------------------------------------Дополнителное образование-------------------------------------------*/
@@ -113,39 +120,30 @@ window.addEventListener('DOMContentLoaded', () => {
                 longitude: 62.274258541957394
             }
         ]
-
-        for (let i = 0; i < higherEducation.length; i++) {
-            additionalEducation.forEach((item) => {
-                additionalCollection.add(new ymaps.Placemark([item.latitude, item.longitude],
-                    {
-                        balloonContent:
-                            `
+        addEduc = () => {
+            for (let i = 0; i < higherEducation.length; i++) {
+                additionalEducation.forEach((item) => {
+                    additionalCollection.add(new ymaps.Placemark([item.latitude, item.longitude],
+                        {
+                            balloonContent:
+                                `
                                <fieldset>
                                 <legend><img src="../img/atlas_legend.png" alt="legend_atlas" size=""></legend>
                                 <label>${item.title}</label>
                               </fieldset>
                         `,
+                        }, {
+                            preset: 'islands#redDotIcon',
+                            iconLayout: 'default#imageWithContent',
+                            iconImageHref: 'img/yellow-cirlce.png',
+                            iconImageSize: [20, 20],
+                            iconImageOffset: [0, 0],
+                        }))
+                })
 
-                    }, {
-                        preset: 'islands#redDotIcon',
-                        iconLayout: 'default#imageWithContent',
-                        iconImageHref: 'img/yellow-cirlce.png',
-                        iconImageSize: [20, 20],
-                        iconImageOffset: [0, 0],
-                    }))
-            })
-
+            }
         }
-        map.geoObjects
-            .add(higherCollection)
-            .add(averageCollection)
-            .add(additionalCollection)
-        return {
-            averEducation,
-            higherEduc,
-        }
-
-
+        return map
     }
 
     /*Активность кнопок фильтров*/
@@ -153,19 +151,35 @@ window.addEventListener('DOMContentLoaded', () => {
     higherBtn.forEach((item) => {
 
         item.addEventListener("click", (ev) => {
-            if (item.classList.contains('active_btn')) {
+            activeBtn = item.id
+            console.log(activeBtn)
+            if (item.classList.contains('active_btn') && item.id === activeBtn) {
                 item.classList.remove('active_btn')
             } else {
                 item.classList.add('active_btn')
             }
+
             if (item.id === 'higher_btn' && item.classList.contains('active_btn')) {
-                init.averEducation
+                map.geoObjects.add(higherCollection)
+                higherEduc()
+            } else if (item.id === 'aver_btn' && item.classList.contains('active_btn')) {
+                map.geoObjects.add(averageCollection)
+                averEducation()
+            } else if (item.id === 'add_btn' && item.classList.contains('active_btn')) {
+                map.geoObjects.add(additionalCollection)
+                addEduc()
+            } else {
+                map.geoObjects.remove()
             }
         })
     })
-
-
 })
+
+/*
+map.geoObjects
+    .add(higherCollection)
+    .add(averageCollection)
+    .add(additionalCollection)*/
 
 
 
