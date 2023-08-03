@@ -4,6 +4,12 @@
     height: 100%;
 }
 
+.atlas_body {
+    background-image: url(../img/bg-atlas.png);
+    background-size: cover;
+    overflow-x: hidden;
+}
+
 .atlas_main {
     padding-top: 120px;
 }
@@ -145,8 +151,9 @@
     cursor: pointer;
 }
 
-[class*="copyrights-pane"] {
-    display: none !important;
+.atlas_download_link {
+    text-decoration: none;
+    color: white;
 }
 
 #map {
@@ -157,6 +164,207 @@
 .active_btn {
     background: #424272;
     color: white;
+}
+
+.atlas_modal {
+    margin: 60px auto 0 auto;
+    max-width: 1180px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 30px;
+    justify-content: center;
+    flex-direction: column;
+    display: none;
+    font-family: "Fira Sans";
+    color: #131545;
+}
+
+.atlas_modal-wrapper {
+    padding: 20px;
+}
+
+.atlas_modal_box {
+    background: #F0F0FF;
+    border-radius: 10px;
+    padding: 0 10px;
+    border: 2px solid black;
+    min-width: 200px;
+    margin: 0 auto;
+    min-height: 51px;
+    position: relative;
+}
+
+.atlas_modal_text {
+    padding: 4px 10px 4px 30px;
+    font-family: Fira Sans;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%; /* 16.8px */
+}
+
+.atlas_modal_img {
+    position: absolute;
+    top: 16px;
+    left: -14px;
+    width: 28px;
+    height: 28px;
+}
+
+.modal-subtitle {
+    font-size: 16px;
+    padding-bottom: 10px;
+}
+
+.modal-city {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 120%;
+    text-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+.modal-title {
+    font-size: 24px;
+    font-weight: 600;
+    padding-bottom: 40px;
+}
+
+.modal-text {
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%;
+    padding-bottom: 10px;
+}
+
+.modal-caption {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 120%;
+    padding-bottom: 40px;
+    color: #131545;
+
+}
+
+.atlas-modal-footer {
+    display: flex;
+    justify-content: space-between;
+    max-width: 810px;
+}
+.citizen{
+    text-decoration: none;
+    color: #131545;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%;
+    padding-bottom: 10px;
+}
+.citizen:hover{
+    text-decoration: underline;
+}
+[class*="copyrights-pane"] {
+    display: none !important;
+}
+
+
+.atlas-link {
+    display: flex;
+    align-items: center;
+}
+
+.atlas-modal-footer-link {
+    display: flex;
+    justify-content: space-between;
+    text-decoration: none;
+    max-width: 1000px;
+}
+
+.atlas-link-items {
+    text-decoration: none;
+    padding-left: 10px;
+}
+
+.atlas_zoom {
+    width: 100vw;
+}
+
+#zoom-in {
+    position: absolute;
+    right: 70px;
+    top: -19px;
+    text-align: right;
+    cursor: pointer;
+}
+
+#zoom-out {
+    position: absolute;
+    right: 70px;
+    cursor: pointer;
+}
+
+.ymaps-2-1-79-listbox__button-icon.ymaps-2-1-79-_icon_layers {
+    background-image: url(../img/atlas_map-scheme.png) !important;
+}
+
+.ymaps-2-1-79-listbox__button.ymaps-2-1-79-_visible-arrow.ymaps-2-1-79-user-selection-none {
+    border-radius: 5px;
+}
+
+.ymaps-2-1-79-_visible-arrow .ymaps-2-1-79-listbox__button-arrow {
+    display: none !important;
+}
+
+.ymaps-2-1-79-_visible-arrow .ymaps-2-1-79-listbox__button-text {
+    display: none !important;
+}
+
+.ymaps-2-1-79-listbox__button-icon {
+    width: 34px !important;
+    height: 34px !important;
+}
+
+.ymaps-2-1-79-listbox__button {
+    height: auto !important;
+}
+
+.ymaps-2-1-79-listbox__button.ymaps-2-1-79-_visible-arrow.ymaps-2-1-79-user-selection-none {
+    position: absolute !important;
+    right: 5px !important;
+}
+
+.ymaps-2-1-79-float-button-icon_icon_geolocation {
+    background-image: url(../img/atlas_navigation.png) !important;
+}
+
+.ymaps-2-1-79-float-button.ymaps-2-1-79-_hidden-text {
+    position: absolute;
+    right: -7px;
+    top: -5px;
+    max-width: 90px;
+    width: 44px;
+    height: 44px;
+    border-radius: 5px;
+}
+
+.ymaps-2-1-79-float-button-icon.ymaps-2-1-79-float-button-icon_icon_geolocation {
+    width: 30px;
+    height: 30px;
+}
+
+.popover {
+    display: block;
+}
+
+.popover .close {
+    position: absolute;
+    right: 5px;
+    top: 1px;
+}
+
+.btn {
+    margin-top: 10px;
 }
 
 /*MEDIA*/

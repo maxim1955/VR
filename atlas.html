@@ -64,8 +64,8 @@
 
 </head>
 
-<body>
-<header class="wrap header">
+<body class="atlas_body" >
+<header class="wrap header atlas_body">
     <div class="header_inner">
         <div>
             <a href="index.html"><img class="header_first_list" src="img/LOGO_VRAR.svg"/></a>
@@ -183,11 +183,11 @@
                 <button class="atlas_btn_item" id="ar_btn">AR</button>
             </div>
             <div class="atlas_group_btn-second">
-                <button class="atlas_btn_item" id="higher_btn">Высшее образование</button>
-                <button class="atlas_btn_item atlas_btn_item-center" id="aver_btn">Среднее профессиональное
+                <button class="atlas_btn_item" id="higherCollection">Высшее образование</button>
+                <button class="atlas_btn_item atlas_btn_item-center" id="averageCollection">Среднее профессиональное
                     образование
                 </button>
-                <button class="atlas_btn_item" id="add_btn">Дополнительное образование</button>
+                <button class="atlas_btn_item" id="additionalCollection">Дополнительное образование</button>
             </div>
         </div>
         <div id="map" style="width: 100%; height: 80vH;"></div>
@@ -200,10 +200,51 @@
             <div class="atlas_legend-list atlas_legend-list-second">
                 <p class="atlas_legend_item atlas_legend_item-add">Дополнительное образование</p>
             </div>
+        </div>
+        <!-------------------------------------------START ATLAS MODAL WINDOW----------------------------------------->
+        <div class="atlas_modal">
+            <div class="atlas_modal-wrapper">
+                <p class="modal-subtitle modal-city">г.Новосибирск</p>
+                <h3 class="modal-title">Федеральное государственное автономное образовательное учреждение высшего
+                    образования «Новосибирский
+                    национальный исследовательский государственный университет»
+                </h3>
+                <h4 class="modal-text">Направление профессиональной подготовки</h4>
+                <p class="modal-caption direction">15.03.06 «Мехатроника и робототехника. Искусственный интеллект» («Когнитивная
+                    робототехника»)</p>
+
+                <h4 class="modal-text">О программе</h4>
+                <p class="modal-caption description">Программа бакалавриата «Когнитивная робототехника» готовит к тому, что будет
+                    завтра: беспилотный
+                    транспорт, умные и ловкие роботы, производство будущего. Студенты изучают и создают продукты на базе
+                    глубокого машинного обучения.
+                </p>
+                <div class="atlas-modal-footer">
+                    <div class="atlas-modal-footer-left">
+                        <h4 class="modal-text modal-text-title ">Формат и сроки обучения:</h4>
+                        <p class="modal-caption format ">бакалавриат, 4 года</p>
+                    </div>
+                    <div class="modal-text">
+                        <a href="#" class="citizen modal-text">Информация для иностранных граждан </a>
+                    </div>
+
+                </div>
+                <div class="atlas-modal-footer-link">
+                    <p class="atlas-link"><img src="img/mail.png" alt="logo world"><a href="" class="atlas-link-items">Узнать о программе подробнее</a></p>
+                    <p class="atlas-link"><img src="img/Hold-The%20Line.png" alt="telephone"><a href=""
+                                                                                                class="atlas-link-items">+7
+                        (383) 363-40-37</a></p>
+                    <p class="atlas-link"><img src="img/telephone.png"><a href="" class="atlas-link-items"></a>priem@nsu.ru
+                    </p>
+                </div>
+
+            </div>
 
         </div>
+        <!-------------------------------------------END ATLAS MODAL WINDOW----------------------------------------->
         <div class="atlas_download">
-            <button class="atlas_download_item ">Скачать список всех учебных заведений</button>
+            <p class="atlas_download_item">
+                <a href="./files/table_university.xlsx" download class="atlas_download_link">Скачать список всех учебных заведений</a></p>
         </div>
     </div>
 </main>
@@ -218,7 +259,7 @@
 
 
 <!-- FEEDBACK MODAL -->
-
+<button id="feedback"></button>
 <div class="modal feedback">
     <div class="modal__overlay">
         <div class="modal__box">
