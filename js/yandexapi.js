@@ -2,20 +2,17 @@ window.addEventListener('DOMContentLoaded', () => {
     ymaps.ready(init);
     let map;
     //Коллекции
-    let averageCollection
-    let additionalCollection
     let higherCollection
+    let filteredCollection
     //массивы
     let higherEducation
-    let averageEducation
-    let additionalEducation
+    let fillteredEducation
     let sortCollection
     let activeBtn = true
     let checkActiveBtn
     let vr_btn = document.querySelector('#vr_btn')
     let ar_btn = document.querySelector("#ar_btn")
-    let ronotBtn = document.querySelector('#robot_btn')
-    let deleteArr = []
+    let robotBtn = document.querySelector('#robot_btn')
 
     async function init() {
 
@@ -27,17 +24,15 @@ window.addEventListener('DOMContentLoaded', () => {
                 zoom: 3,
                 controls: [],
                 behaviors: ['default', 'scrollZoom']
-            }, {
+            },
+            {
                 searchControlProvider: 'yandex#search'
             });
 
         map.controls.remove('searchControl')
         map.controls.remove('trafficControl');
         higherCollection = new ymaps.GeoObjectCollection(null, {});
-        averageCollection = new ymaps.GeoObjectCollection(null, {});
-        additionalCollection = new ymaps.GeoObjectCollection(null, {});
-        sortCollection = new ymaps.GeoObjectCollection(null, {})
-
+        filteredCollection = new ymaps.GeoObjectCollection(null, {})
 
         MyBalloonLayout = ymaps.templateLayoutFactory.createClass(
             '<div class="atlas_modal_box">' +
@@ -57,147 +52,9 @@ window.addEventListener('DOMContentLoaded', () => {
                     document.querySelector('.atlas_modal_box').style.left = (30 + 'px')
                 },
 
-            }),
+            })
 
-
-            /*----------------------------------------Высшее образование------------------------------------------------*/
-            higherEducation = [
-                {
-                    title: "ФГАОУ ВО «Национальный исследовательский ядерный университет «МИФИ»",
-                    city: 'Москва',
-                    subtitle: "Федеральное государственное автономное образовательное учреждение высшего образования «Национальный исследовательский ядерный университет «МИФИ»",
-                    direction: "15.03.06 – Мехатроника и робототехника",
-                    description: "Осуществляется практическая подготовка бакалавров, способных успешно работать в сфере деятельности, связанной с разработкой и сопровождением эксплуатации мехатронных, киберфизических и робототехнических систем в атомной промышленности и других высокотехнологичных отраслях.",
-                    format: "бакалавриат - 4 года",
-                    citizen: 'https://eng.mephi.ru/academics/admissions',
-                    latitude: 50.582061,
-                    longitude: 36.596484,
-                    rang: 'vr',
-                    type: 'high'
-                },
-
-                {
-                    title: "ФГАОУ ВО «Белгородский государственный технологический университет им. В.Г. Шухова»",
-                    city: 'Белгород',
-                    subtitle: "Федеральное государственное автономное образовательное учреждение высшего образования «Национальный исследовательский ядерный университет «МИФИ»",
-                    direction: "15.03.06 – Мехатроника и робототехника",
-                    description: "Область профессиональной деятельности выпускников, освоивших программу: цифровые методы и средства проектирования, математического, физического и компьютерного моделирования технологических процессов. Выпускники разрабатывают инновационные технологии и их цифровые двойники для самых перспективных отраслей промышленности – автомобиле-, авиа-, ракетостроения, энергетики и атомной промышленности и эффективно их внедряют на производстве.",
-                    format: "бакалавриат - 4 года",
-                    citizen: 'https://eng.mephi.ru/academics/admissions',
-                    latitude: 55.649803162,
-                    longitude: 37.664463043,
-                    rang: 'ar',
-                    type: 'high'
-                },
-                {
-                    title: "ФГАОУ ВО «Белгородский государственный технологический университет им. В.Г. Шухова»",
-                    city: 'Белгород',
-                    subtitle: "Федеральное государственное автономное образовательное учреждение высшего образования «Национальный исследовательский ядерный университет «МИФИ»",
-                    direction: "15.03.06 – Мехатроника и робототехника",
-                    description: "Область профессиональной деятельности выпускников, освоивших программу: цифровые методы и средства проектирования, математического, физического и компьютерного моделирования технологических процессов. Выпускники разрабатывают инновационные технологии и их цифровые двойники для самых перспективных отраслей промышленности – автомобиле-, авиа-, ракетостроения, энергетики и атомной промышленности и эффективно их внедряют на производстве.",
-                    format: "бакалавриат - 4 года",
-                    citizen: 'https://eng.mephi.ru/academics/admissions',
-                    latitude: 15.649803162,
-                    longitude: 57.664463043,
-                    rang: 'robot',
-                    type: 'high'
-                }
-
-            ];
-        higherEduc = () => {
-            for (let i = 0; i < higherEducation.length; i++) {
-                higherEducation.forEach((item) => {
-                    let myPlacemark = new ymaps.Placemark([item.latitude, item.longitude], {
-                        hintContent: item.title,
-                        balloonContent: item.title,
-                        item,
-                    }, {
-                        balloonShadow: false,
-                        balloonLayout: MyBalloonLayout,
-                        iconLayout: 'default#imageWithContent',
-                        iconImageHref: 'img/red_circle.png',
-                        iconImageSize: [20, 20],
-                        iconImageOffset: [0, 0],
-
-                    })
-                    higherCollection.add(myPlacemark, item.rang)
-                    myPlacemark.events
-                        .add('click', (e) => {
-                            e.get('target').options.set('iconImageHref', 'img/activeMark.png');
-                            atlasWindow.style.display = 'flex'
-                            document.querySelector(".modal-city").textContent = `г. ${item.city}`
-                            document.querySelector(".modal-title").textContent = item.title
-                            document.querySelector(".direction").textContent = item.direction
-                            document.querySelector(".format").textContent = item.format
-                            document.querySelector(".description").textContent = item.description
-                            document.querySelector(".citizen").href = item.citizen
-                        })
-                        .add('mouseenter', function (e) {
-                            e.get('target').options.set('iconImageHref', 'img/activeMark.png');
-                        })
-                        .add('mouseleave', function (e) {
-                            e.get('target').options.set('iconImageHref', 'img/red_circle.png')
-                        });
-                })
-            }
-            return higherEducation
-        }
-
-        /*----------------------------------------Среднее образование------------------------------------------------*/
-        averageEducation = [
-            {
-                title: "СПБГУ",
-                desk: "aa",
-                latitude: 45.06252622511122,
-                longitude: 38.99731322616615,
-                rang: 'vr',
-                type: 'aver'
-            },
-            {
-                title: "СПБГУ",
-                desk: "aa",
-                latitude: 48.06252622511122,
-                longitude: 33.99731322616615,
-                rang: 'robot',
-                type: 'aver'
-            },
-
-            {
-                title: "СПБГУ",
-                desk: "aaa",
-                latitude: 54.90765560419258,
-                longitude: 52.274258541957394,
-                rang: 'ar',
-                type: 'aver'
-            }
-        ];
-        averEducation = () => {
-            for (let i = 0; i < averageEducation.length; i++) {
-                averageEducation.forEach((item) => {
-                    let myPlacemark = new ymaps.Placemark([item.latitude, item.longitude], {
-                        hintContent: item.title,
-                        balloonContent: item.desk,
-                        item,
-                    }, {
-                        balloonShadow: false,
-                        balloonLayout: MyBalloonLayout,
-                        iconLayout: 'default#imageWithContent',
-                        iconImageHref: 'img/blue-circle.png',
-                        iconImageSize: [20, 20],
-                        iconImageOffset: [0, 0],
-                    })
-                    averageCollection.add(myPlacemark)
-                    myPlacemark.events.add('click', () => {
-                        atlasWindow.style.display = 'flex'
-                        document.querySelector(".modal-city").innerText = `г. ${item.city}`
-                    })
-                })
-            }
-            return averEducation
-        }
-
-        /*----------------------------------------Дополнителное образование-------------------------------------------*/
-        additionalEducation = [
+        fillteredEducation = [
             {
                 title: "ФИНЭК",
                 desk: "adasasdasd",
@@ -222,31 +79,141 @@ window.addEventListener('DOMContentLoaded', () => {
                 rang: 'robot',
                 type: 'add'
             },
+            {
+                title: "СПБГУ",
+                desk: "aa",
+                latitude: 45.06252622511122,
+                longitude: 38.99731322616615,
+                rang: 'vr',
+                type: 'aver'
+            },
+            {
+                title: "СПБГУ",
+                desk: "aa",
+                latitude: 48.06252622511122,
+                longitude: 33.99731322616615,
+                rang: 'robot',
+                type: 'aver'
+            },
+
+            {
+                title: "СПБГУ",
+                desk: "aaa",
+                latitude: 54.90765560419258,
+                longitude: 52.274258541957394,
+                rang: 'ar',
+                type: 'aver'
+            },
+            {
+                title: "ФГАОУ ВО «Национальный исследовательский ядерный университет «МИФИ»",
+                city: 'Москва',
+                subtitle: "Федеральное государственное автономное образовательное учреждение высшего образования «Национальный исследовательский ядерный университет «МИФИ»",
+                direction: "15.03.06 – Мехатроника и робототехника",
+                description: "Осуществляется практическая подготовка бакалавров, способных успешно работать в сфере деятельности, связанной с разработкой и сопровождением эксплуатации мехатронных, киберфизических и робототехнических систем в атомной промышленности и других высокотехнологичных отраслях.",
+                format: "бакалавриат - 4 года",
+                citizen: 'https://eng.mephi.ru/academics/admissions',
+                latitude: 50.582061,
+                longitude: 36.596484,
+                rang: 'vr',
+                type: 'high'
+            },
+            {
+                title: "ФГАОУ ВО «Белгородский государственный технологический университет им. В.Г. Шухова»",
+                city: 'Белгород',
+                subtitle: "Федеральное государственное автономное образовательное учреждение высшего образования «Национальный исследовательский ядерный университет «МИФИ»",
+                direction: "15.03.06 – Мехатроника и робототехника",
+                description: "Область профессиональной деятельности выпускников, освоивших программу: цифровые методы и средства проектирования, математического, физического и компьютерного моделирования технологических процессов. Выпускники разрабатывают инновационные технологии и их цифровые двойники для самых перспективных отраслей промышленности – автомобиле-, авиа-, ракетостроения, энергетики и атомной промышленности и эффективно их внедряют на производстве.",
+                format: "бакалавриат - 4 года",
+                citizen: 'https://eng.mephi.ru/academics/admissions',
+                latitude: 55.649803162,
+                longitude: 37.664463043,
+                rang: 'ar',
+                type: 'high'
+            },
+            {
+                title: "ФГАОУ ВО «Белгородский государственный технологический университет им. В.Г. Шухова»",
+                city: 'Белгород',
+                subtitle: "Федеральное государственное автономное образовательное учреждение высшего образования «Национальный исследовательский ядерный университет «МИФИ»",
+                direction: "15.03.06 – Мехатроника и робототехника",
+                description: "Область профессиональной деятельности выпускников, освоивших программу: цифровые методы и средства проектирования, математического, физического и компьютерного моделирования технологических процессов. Выпускники разрабатывают инновационные технологии и их цифровые двойники для самых перспективных отраслей промышленности – автомобиле-, авиа-, ракетостроения, энергетики и атомной промышленности и эффективно их внедряют на производстве.",
+                format: "бакалавриат - 4 года",
+                citizen: 'https://eng.mephi.ru/academics/admissions',
+                latitude: 15.649803162,
+                longitude: 57.664463043,
+                rang: 'robot',
+                type: 'high'
+            }
         ]
-        addEduc = () => {
-            for (let i = 0; i < higherEducation.length; i++) {
-                additionalEducation.forEach((item) => {
-                    let myPlacemark = new ymaps.Placemark([item.latitude, item.longitude],
-                        {
-                            hintContent: item.title,
-                            balloonContent: item.title,
-                            item,
-                        },
-                        {
-                            balloonShadow: false,
-                            balloonLayout: MyBalloonLayout,
-                            iconLayout: 'default#imageWithContent',
-                            iconImageHref: 'img/yellow-cirlce.png',
-                            iconImageSize: [20, 20],
-                            iconImageOffset: [0, 0],
-                        })
-                    additionalCollection.add(myPlacemark)
-                    myPlacemark.events.add('click', () => {
-                        atlasWindow.style.display = 'flex'
-                        document.querySelector(".modal-city").innerText = item.city
+
+        filterEduc = () => {
+            for (let i = 0; i < fillteredEducation.length; i++) {
+                fillteredEducation.forEach((item) => {
+                    let iconImageHref
+                    if (item.type === 'high') {
+                        iconImageHref = '../img/red_circle.png'
+                    } else if (item.type === 'aver') {
+                        iconImageHref = '../img/blue-circle.png'
+                    } else if (item.type === 'add') {
+                        iconImageHref = '../img/yellow-cirlce.png'
+                    }
+
+                    let myPlacemark = new ymaps.Placemark([item.latitude, item.longitude], {
+                        hintContent: item.title,
+                        balloonContent: item.title,
+                        item,
+                    }, {
+                        balloonShadow: false,
+                        balloonLayout: MyBalloonLayout,
+                        iconLayout: 'default#imageWithContent',
+                        iconImageHref,
+                        iconImageSize: [20, 20],
+                        iconImageOffset: [0, 0],
+
                     })
+                    filteredCollection.add(myPlacemark, item.rang)
+                    myPlacemark.events
+                        .add('click', function (e) {
+                            atlasWindow.style.display = 'flex'
+                            document.querySelector(".modal-city").textContent = `г. ${item.city}`
+                            document.querySelector(".modal-title").textContent = item.title
+                            document.querySelector(".direction").textContent = item.direction
+                            document.querySelector(".format").textContent = item.format
+                            document.querySelector(".description").textContent = item.description
+                            document.querySelector(".citizen").href = item.citizen
+                        })
+
+                        .add('balloonopen', function(e){
+                            if (item.type === 'high') {
+                                e.get('target').options.set('iconImageHref', '../img/activeMark.png')
+                            } else if (item.type === 'aver') {
+                                e.get('target').options.set('iconImageHref', '../img/blueActiveMark.png')
+                            } else if (item.type === 'add') {
+                                e.get('target').options.set('iconImageHref', '../img/orangeactiveMark.png')
+                            }
+                    })
+
+                        .add('balloonclose', (e)=>{
+                            if (item.type === 'high') {
+                                myPlacemark.options.set('iconImageHref', '../img/red_circle.png')
+                            } else if (item.type === 'aver') {
+                                myPlacemark.options.set('iconImageHref', '../img/blue-circle.png')
+                            } else if (item.type === 'add') {
+                                myPlacemark.options.set('iconImageHref', '../img/yellow-cirlce.png')
+
+                            }
+                        })
+                        .add('hintopen', function(e){
+                            if (item.type === 'high') {
+                                e.get('target').options.set('iconImageHref', '../img/activeMark.png')
+                            } else if (item.type === 'aver') {
+                                e.get('target').options.set('iconImageHref', '../img/blueActiveMark.png')
+                            } else if (item.type === 'add') {
+                                e.get('target').options.set('iconImageHref', '../img/orangeactiveMark.png')
+                            }
+                        })
                 })
             }
+            return fillteredEducation
         }
         let ZoomLayout = ymaps.templateLayoutFactory.createClass("" +
                 "<div class='atlas_zoom'>" +
@@ -297,28 +264,8 @@ window.addEventListener('DOMContentLoaded', () => {
                     top: 200
                 }
             })
-
-
-        checkActiveBtn = () => {
-            if (!map.geoObjects.getLength()) {
-                activeBtn = true
-                map.geoObjects
-                    .add(higherCollection)
-                    .add(averageCollection)
-                    .add(additionalCollection)
-                higherEduc()
-                addEduc()
-                averEducation()
-                vr_btn.classList.remove('active_btn')
-                ar_btn.classList.remove('active_btn')
-                ronotBtn.classList.remove('active_btn')
-            } else {
-                if (activeBtn) {
-                    map.geoObjects.removeAll()
-                }
-            }
-        }
-        checkActiveBtn()
+        map.geoObjects.add(filteredCollection)
+        filterEduc()
         return map
     }
 
@@ -330,165 +277,91 @@ window.addEventListener('DOMContentLoaded', () => {
     let higheduc = document.querySelector('#higherCollection')
     let additional = document.querySelector('#additionalCollection')
     let average = document.querySelector('#averageCollection')
+
+    let firstRequest = "select uni_name, short_name, uni_city, latitude, longitude, direction, uni_description, form, url, uni_level, vrarrob from university where "
+    let secondRequest = "select uni_name, short_name, uni_city, latitude, longitude, direction, uni_description, form, url, uni_level, vrarrob from university where "
+    let resultRequest = ""
+    let str1 = ""
+    let str2 = ""
+
     higherBtn.forEach((item) => {
-        console.log(item)
         item.addEventListener("click", (ev) => {
-            if (activeBtn) {
-                map.geoObjects.removeAll()
-                activeBtn = false
-            }
             if (item.classList.contains('active_btn')) {
                 item.classList.remove('active_btn')
                 if (item.id === 'higherCollection') {
-                    map.geoObjects.remove(higherCollection)
-                    checkActiveBtn()
-                } else if (item.id === 'averageCollection') {
-                    map.geoObjects.remove(averageCollection)
-                    checkActiveBtn()
-                } else {
-                    map.geoObjects.remove(additionalCollection)
-                    checkActiveBtn()
+                    firstRequest = firstRequest.replace("uni_level='ВО' OR ", '')
                 }
-
-                /*-----------------------------Фильтрация по VR------------------------------------------------------*/
-
-                if (!vr_btn.classList.contains('active_btn') && higheduc.classList.contains('active_btn')) {
-                    console.log(deleteArr.length)
-                    deleteArr.forEach((item) => {
-                        console.log(item)
-                        higherCollection.add(item)
-                        higherCollection.set(higherCollection.length(), item)
-                        map.geoObjects.add(higherCollection)
-                    })
+                if (item.id === 'averageCollection') {
+                    firstRequest = firstRequest.replace("uni_level='СПО' OR ", '')
                 }
-
+                if (item.id === 'additionalCollection') {
+                    firstRequest = firstRequest.replace("uni_level='ДПО' OR ", '')
+                }
+                if (item.id === 'vr_btn') {
+                    secondRequest = secondRequest.replace("vrarrob like '%VR%' OR ", '')
+                }
+                if (item.id === 'ar_btn') {
+                    secondRequest = secondRequest.replace("vrarrob like '%AR%' OR ", '')
+                }
+                if (item.id === 'robot_btn') {
+                    secondRequest = secondRequest.replace("vrarrob like '%робототехника%' OR ", '')
+                }
+                if (firstRequest.endsWith(" OR ")) {
+                    str1 = firstRequest.slice(0, -4)
+                }
+                if (secondRequest.endsWith(" OR ")) {
+                    str2 = secondRequest.slice(0, -4)
+                }
 
             } else {
                 item.classList.add('active_btn')
             }
-            if (item.id === 'higherCollection' && item.classList.contains('active_btn')) {
-                map.geoObjects.add(higherCollection)
-                higherEduc()
+
+            /*-----------------------------Фильтрация по HigherEducation------------------------------------------------------*/
+
+            if (item.id === 'higherCollection' && higheduc.classList.contains('active_btn')) {
+                firstRequest += "uni_level='ВО' OR "
             }
-            if (item.id === 'averageCollection' && item.classList.contains('active_btn')) {
-                map.geoObjects.add(averageCollection)
-                averEducation()
+            if (item.id === 'averageCollection' && average.classList.contains('active_btn')) {
+                firstRequest += "uni_level='СПО' OR "
             }
-            if (item.id === 'additionalCollection' && item.classList.contains('active_btn')) {
-                map.geoObjects.add(additionalCollection)
-                addEduc()
-            }
-            if (item.id === 'higherCollection' && item.classList.contains('active_btn') && item.id) {
-                map.geoObjects.add(higherCollection)
-                higherEduc()
+            if (item.id === 'additionalCollection' && additional.classList.contains('active_btn')) {
+                firstRequest += " uni_level='ДПО' OR "
             }
 
-            /*-----------------------------Фильтрация по VR------------------------------------------------------*/
-
-            if (item.id === 'vr_btn' && higheduc.classList.contains('active_btn')) {
-                for (let i = 0; i < higherCollection.getLength(); i++) {
-                    higherCollection.each((item) => {
-                        if (item.properties._data.item.rang !== "vr") {
-                            console.log(item)
-                            higherCollection.remove(item)
-                            deleteArr.push(item)
-                            console.log(deleteArr.length)
-                        }
-                    }, {})
-                }
-
+            if (item.id === 'vr_btn' && vr_btn.classList.contains('active_btn')) {
+                secondRequest += "vrarrob like '%VR%' OR "
             }
-            if (item.id === 'vr_btn' && average.classList.contains('active_btn')) {
-                for (let i = 0; i < averageCollection.getLength(); i++) {
-                    averageCollection.each((item) => {
-                        if (item.properties._data.item.rang !== "vr") {
-                            averageCollection.remove(item)
-                        }
-                    })
-                }
+            if (item.id === 'ar_btn' && ar_btn.classList.contains('active_btn')) {
+                secondRequest += "vrarrob like '%AR%' OR "
             }
-            if (item.id === 'vr_btn' && additional.classList.contains('active_btn')) {
-                for (let i = 0; i < additionalCollection.getLength(); i++) {
-                    additionalCollection.each((item) => {
-                        if (item.properties._data.item.rang !== "vr") {
-                            additionalCollection.remove(item)
-                        }
-                    })
-                }
-
+            if (item.id === 'robot_btn' && robotBtn.classList.contains('active_btn')) {
+                secondRequest += "vrarrob like '%робототехника%' OR "
             }
 
-            /*-----------------------------Фильтрация по AR------------------------------------------------------*/
-
-            if (item.id === 'ar_btn' && higheduc.classList.contains('active_btn')) {
-                for (let i = 0; i < higherCollection.getLength(); i++) {
-                    higherCollection.each((item) => {
-                        if (item.properties._data.item.rang !== "ar") {
-                            higherCollection.remove(item)
-                        }
-                    })
-                }
+            if (firstRequest.endsWith(" OR ")) {
+                str1 = firstRequest.slice(0, -4)
             }
-            if (item.id === 'ar_btn' && average.classList.contains('active_btn')) {
-                for (let i = 0; i < averageCollection.getLength(); i++) {
-                    averageCollection.each((item) => {
-                        if (item.properties._data.item.rang !== "ar") {
-                            averageCollection.remove(item)
-                        } else {
-                        }
-                    })
-                }
-
-            }
-            if (item.id === 'ar_btn' && additional.classList.contains('active_btn')) {
-                for (let i = 0; i < additionalCollection.getLength(); i++) {
-                    additionalCollection.each((item) => {
-                        if (item.properties._data.item.rang !== "ar") {
-                            additionalCollection.remove(item)
-                        } else {
-                        }
-                    })
-                }
-
+            if (secondRequest.endsWith(" OR ")) {
+                str2 = secondRequest.slice(0, -4)
             }
 
-            /*-----------------------------Фильтрация по Roboto------------------------------------------------------*/
-
-            if (item.id === 'robot_btn' && higheduc.classList.contains('active_btn')) {
-                for (let i = 0; i < higherCollection.getLength(); i++) {
-                    higherCollection.each((item) => {
-                        if (item.properties._data.item.rang !== "robot") {
-                            higherCollection.remove(item)
-                        } else {
-
-                        }
-                    })
-                }
-
+            if (str1 !== '' && str2 !== '') {
+                resultRequest = `${str1}  INTERSECT  ${str2}`
+            } else if(str1 ===  '') {
+                resultRequest = str2
+            }else if(str2 === ''){
+                resultRequest = str1
+            } else {
+                resultRequest = str1
             }
-            if (item.id === 'robot_btn' && average.classList.contains('active_btn')) {
-                for (let i = 0; i < averageCollection.getLength(); i++) {
-                    averageCollection.each((item) => {
-                        if (item.properties._data.item.rang !== "robot") {
-                            averageCogillection.remove(item)
-                        } else {
-                        }
-                    })
-                }
 
+            if (!higheduc.classList.contains('active_btn') && !average.classList.contains('active_btn') && !additional.classList.contains('active_btn') && !vr_btn.classList.contains('active_btn') && !ar_btn.classList.contains('active_btn') && !robotBtn.classList.contains('active_btn')) {
+                str2 =""
+                str1 =""
+                resultRequest = "select uni_name, short_name, uni_city, latitude, longitude, direction, uni_description, form, url, uni_level, vrarrob from university"
             }
-            if (item.id === 'robot_btn' && additional.classList.contains('active_btn')) {
-                for (let i = 0; i < additionalCollection.getLength(); i++) {
-                    additionalCollection.each((item) => {
-                        if (item.properties._data.item.rang !== "robot") {
-                            additionalCollection.remove(item)
-                        } else {
-
-                        }
-                    })
-                }
-
-            }
+            console.log(resultRequest)
         })
 
     })
