@@ -1,21 +1,17 @@
 window.addEventListener('DOMContentLoaded', () => {
+
     ymaps.ready(init);
     let map;
     //Коллекции
     let higherCollection
     let filteredCollection
     //массивы
-    let higherEducation
     let fillteredEducation
-    let sortCollection
-    let activeBtn = true
-    let checkActiveBtn
     let vr_btn = document.querySelector('#vr_btn')
     let ar_btn = document.querySelector("#ar_btn")
     let robotBtn = document.querySelector('#robot_btn')
 
     async function init() {
-
         let center = [61.782062911598075, 85.32215890189144]
         map = await new ymaps.Map(
             'map',
@@ -28,7 +24,6 @@ window.addEventListener('DOMContentLoaded', () => {
             {
                 searchControlProvider: 'yandex#search'
             });
-
         map.controls.remove('searchControl')
         map.controls.remove('trafficControl');
         higherCollection = new ymaps.GeoObjectCollection(null, {});
@@ -54,7 +49,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             })
 
-        fillteredEducation = [
+        fillteredEducation = fillteredEducation = [
             {
                 title: "ФИНЭК",
                 desk: "adasasdasd",
@@ -145,6 +140,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         ]
 
+
         filterEduc = () => {
             for (let i = 0; i < fillteredEducation.length; i++) {
                 fillteredEducation.forEach((item) => {
@@ -182,7 +178,7 @@ window.addEventListener('DOMContentLoaded', () => {
                             document.querySelector(".citizen").href = item.citizen
                         })
 
-                        .add('balloonopen', function(e){
+                        .add('balloonopen', function (e) {
                             if (item.type === 'high') {
                                 e.get('target').options.set('iconImageHref', '../img/activeMark.png')
                             } else if (item.type === 'aver') {
@@ -190,9 +186,9 @@ window.addEventListener('DOMContentLoaded', () => {
                             } else if (item.type === 'add') {
                                 e.get('target').options.set('iconImageHref', '../img/orangeactiveMark.png')
                             }
-                    })
+                        })
 
-                        .add('balloonclose', (e)=>{
+                        .add('balloonclose', (e) => {
                             if (item.type === 'high') {
                                 myPlacemark.options.set('iconImageHref', '../img/red_circle.png')
                             } else if (item.type === 'aver') {
@@ -202,7 +198,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
                             }
                         })
-                        .add('hintopen', function(e){
+                        .add('hintopen', function (e) {
                             if (item.type === 'high') {
                                 e.get('target').options.set('iconImageHref', '../img/activeMark.png')
                             } else if (item.type === 'aver') {
@@ -348,20 +344,27 @@ window.addEventListener('DOMContentLoaded', () => {
 
             if (str1 !== '' && str2 !== '') {
                 resultRequest = `${str1}  INTERSECT  ${str2}`
-            } else if(str1 ===  '') {
+            } else if (str1 === '') {
                 resultRequest = str2
-            }else if(str2 === ''){
+            } else if (str2 === '') {
                 resultRequest = str1
             } else {
                 resultRequest = str1
             }
 
             if (!higheduc.classList.contains('active_btn') && !average.classList.contains('active_btn') && !additional.classList.contains('active_btn') && !vr_btn.classList.contains('active_btn') && !ar_btn.classList.contains('active_btn') && !robotBtn.classList.contains('active_btn')) {
-                str2 =""
-                str1 =""
+                str2 = ""
+                str1 = ""
                 resultRequest = "select uni_name, short_name, uni_city, latitude, longitude, direction, uni_description, form, url, uni_level, vrarrob from university"
             }
-            console.log(resultRequest)
+            let url = 'school.php'
+            fetch(url, {
+                method: "POST",
+                data: {$sql: resultRequest}
+            })
+                .then((res) => {
+                    console.log(res)
+                })
         })
 
     })
